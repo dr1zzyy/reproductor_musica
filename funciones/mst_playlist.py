@@ -1,9 +1,24 @@
-def mst_playlist():
-    with open("canciones.txt", "r") as playlist:
-        print("\n------ PLAYLIST ------")
-        count=1
-        for linea in playlist:
-            cancion,autor = linea.strip().split(";")
-            print(f"{count}. {cancion} - {autor}")
-            count+=1
-        print("----------------------\n")
+import json
+import os 
+
+RUTA = "canciones.json"
+
+def mst_playlist(show=True):
+    if os.path.exists(RUTA) and os.path.getsize(RUTA) > 0:
+        try:
+            with open(RUTA, "r") as archivo:
+                datos = json.load(archivo)
+        except json.JSONDecodeError:
+            datos = []
+    else:
+        datos = []
+
+    if show == True:
+        print("========== PLAYLIST ==========================")
+        
+        for lista in datos:
+            print(f'{lista["nombre"]} — {lista["autor"]}')
+    
+        print("========== PLAYLIST ==========================")
+
+    return datos
